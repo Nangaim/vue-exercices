@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learning Vue</title>
+    <script src="https://unpkg.com/vue@3.0.2"></script>
+    <style>
+      .box {
+        padding: 100px 0;
+        width: 400px;
+        text-align: center;
+        background: #ddd;
+        margin: 20px;
+        display: inline-block;
+      }
+
+      body {
+        background: #eee;
+        max-width: 960px;
+        margin: 20px auto;
+      }
+      p,
+      h3,
+      ul {
+        margin: 0;
+        padding: 0;
+      }
+      li {
+        list-style-type: none;
+        background: #fff;
+        margin: 20px auto;
+        padding: 10px 20px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      li.fav {
+        background: #ff9ed2;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>hello, vue</h1>
+    <div id="app">
+      <!-- Attribute binding -->
+      <a :href="url">best webstite ever</a>
+
+      <!-- Affichage conditionnel -->
+      <div v-if="chowBooks">
+        <ul>
+          <li v-for="book in books" :class="{fav: book.isFav}">
+            <img :src="book.img" :alt="book.title" />
+            <h3>{{book.title}}</h3>
+            <p>{{book.author}}</p>
+            <button @click="handleFav(book)">fav</button>
+          </li>
+        </ul>
+      </div>
+      <button @click="handleShowFav">Show fav</button>
+      <button @click="toggleShowBooks">
+        <span v-if="chowBooks">Hide books</span>
+        <span v-else>Show books</span>
+      </button>
+      <br />
+      <!-- mouse event-->
+      <div class="box" @mouseover="handleEvent(5)">mouse hover (enter)</div>
+      <div class="box" @mouseleave="handleEvent">mouse leave</div>
+      <div class="box" @dblclick="handleEvent">double click</div>
+      <div class="box" @mousemove="handleMousemove">
+        Position -{{ x }} {{ y }}
+      </div>
+    </div>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
