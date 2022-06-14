@@ -2,24 +2,46 @@
   <div class="home">
     <h1>Home</h1>
     <input type="text" v-model="search">
-    <p>search : {{search}}</p>
-    <div v-for="name in matchingNames" :key="name">
-      {{name}}
-    </div>
+    <div v-for="name in matchingNames" :key="name">{{ name }}</div>
+    <PostList :posts="posts" />
   </div>
 </template>
 
 <script>
 import { computed, reactive, ref } from 'vue'
+// component imports
+import PostList from '../components/PostList.vue'
 export default {
-  name: 'Home',
-  setup() {    
+  name: 'home',
+  components: { PostList },
+  setup() {
     const search = ref('')
-    const names = ref(['mario', 'yoshi', 'luigi', 'toad', 'bowser', 'koopa', "peach"])
+    const names = ref(['mario', 'yoshi', 'luigi', 'toad', 'bowser', 'koopa', 'peach'])
     const matchingNames = computed(() => {
-      return names.value.filter((name) => name.includes(search.value))
+      // return ['a', 'b', 'c']
+      return names.value.filter(name => name.includes(search.value))
     })
-    return { names, search, matchingNames}
+
+    const posts = ref([])
+    const error = ref(null)
+
+    const load = async () => {
+      try{
+        let data = await fetch("http://localhost:3000/posts")
+        if (!data.ok){
+          throw Error('no data available')
+        }
+        posts.value = await data.json()
+        
+      }
+      catch (err){
+        error.value = err.message
+      }
+    }
+
+    load()
+
+    return { posts, names, search, matchingNames, error }
   },
 }
 </script>
